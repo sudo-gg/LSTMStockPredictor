@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+    volumes:
+      - ..:/app:cached
+    working_dir: /app
+    command: sleep infinity  # Keeps the container running
+    depends_on:
+      - mongo
+    networks:
+      - dev-network
+
+  mongo:
+    image: mongo:7
+    restart: always
+    ports:
+      - "27017:27017"
+    networks:
+      - dev-network
+
+networks:
+  dev-network:
