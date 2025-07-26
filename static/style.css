@@ -1,0 +1,118 @@
+/* General body styling */
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 40px;
+    background-color: #f5f5f5; /* lighter background for cleaner look */
+}
+
+/* Top bar (hello + logout) */
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding: 0 10px;
+}
+
+.top-bar h2 {
+    margin: 0;
+    color: #333;
+    font-size: 20px;
+}
+
+/* Unified predictor content block */
+.main-content {
+    background-color: #ffffff;
+    padding: 30px;
+    max-width: 600px;
+    margin: 0 auto;
+    border-radius: 10px;
+    border: 1px solid #ddd; /* soft border for structure without harsh separation */
+}
+
+/* Page header */
+h1 {
+    color: #333;
+}
+
+/* Input form layout */
+#inputContainer {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Ticker input styling */
+input {
+    padding: 10px;
+    font-size: 16px;
+    width: 250px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+input:disabled {
+    background-color: #e0e0e0;
+    color: #666;
+    cursor: not-allowed;
+}
+
+/* Button styling */
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: opacity 0.4s ease, transform 0.2s ease, background-color 0.3s ease;
+}
+
+button:hover:not(:disabled) {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+button:active:not(:disabled) {
+    transform: scale(0.95);
+}
+
+button:disabled {
+    background-color: #aaa;
+    cursor: not-allowed;
+}
+
+/* Result output */
+#result {
+    margin-top: 30px;
+    font-size: 18px;
+    color: #444;
+}
+
+/* Error message */
+#error {
+    color: red;
+    margin-top: 15px;
+}
+
+/* Progress bar area */
+#progress {
+    margin: 20px auto 0;
+    width: 300px;
+}
+
+#progressBar {
+    height: 10px;
+    background-color: #007bff;
+    width: 0%;
+    transition: width 0.5s ease;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+#progressText {
+    font-size: 16px;
+    color: #333;
+}

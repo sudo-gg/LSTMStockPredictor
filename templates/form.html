@@ -1,31 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name = "viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login page</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="container mt-5">
-        <h2>Login</h2>
-        <!-- sends the form data to the /login route using POST -->
-        <form method="POST" action="/login">
-            <div class="mb-3">
-                <!-- linked the label to the input field for username using the 'for' attribute
-                 the 'id' attribute of the input field matches the 'for' attribute of the label -->
-                <label for="username" class="form-label">Username</label>
-                <!-- name attribute is used to access the value in the backend
-                 i.e. request.form['username'] = ValueEntered -->
-                <input type="text" class="form-control" id="username" name="username" required>
-            </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" name="password" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Login</button>
-        </form>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <div style="margin-top: 70px;"class="main-content">
+    <h1>Login</h1>
+    <form method="POST" action="/login" style="display: flex; flex-direction: column; gap: 20px; align-items: center;">
+      <div style="display: flex; flex-direction: column; text-align: left; width: 100%; max-width: 300px;">
+        <input type="text" id="username" name="username" placeholder="Username" required>
+      </div>
+      <div style="display: flex; flex-direction: column; text-align: left; width: 100%; max-width: 300px;">
+        <input type="password" id="password" name="password" placeholder="Password" required>
+      </div>
+
+      <button type="submit">Login</button>
+    </form>
+  </div>
+
 </body>
 </html>
