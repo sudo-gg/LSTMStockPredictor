@@ -252,7 +252,7 @@ def mixedPrediction(ticker: str, history_period: str = '1y', sequence_length: in
             print(f"No data found for ticker: {ticker}")
             return None, None, None
         
-        current_price = full_data['Close'].iloc[-1] # Last available closing price
+        current_price = full_data['Close'].iloc[-1][0] # Last available closing price
 
         # Pass the full_data to the prediction functions
         # ARIMA typically benefits from more history, so pass all available data.
@@ -320,52 +320,21 @@ def mixedPrediction(ticker: str, history_period: str = '1y', sequence_length: in
 
 
 if __name__ == "__main__":
-    print("--- ARIMA Predictions ---")
-    aapl_arima_prediction = predictPriceARIMA("AAPL")
-    if aapl_arima_prediction is not None:
-        print(f"ARIMA Predicted next day's AAPL price: {aapl_arima_prediction:.2f}")
-
-    msft_arima_prediction = predictPriceARIMA("MSFT", history_period="6mo")
-    if msft_arima_prediction is not None:
-        print(f"ARIMA Predicted next day's MSFT price: {msft_arima_prediction:.2f}")
-
-    print("\n--- GRU Predictions ---")
-    aapl_gru_prediction = predictPriceGru("AAPL")
-    if aapl_gru_prediction is not None:
-        print(f"GRU Predicted next day's AAPL price: {aapl_gru_prediction:.2f}")
-
-    msft_gru_prediction = predictPriceGru("MSFT", history_period="6mo")
-    if msft_gru_prediction is not None:
-        print(f"GRU Predicted next day's MSFT price: {msft_gru_prediction:.2f}")
-
-    print("\n--- GRU Predictions (with Volume) ---")
-    aapl_gru_prediction_vol = predictPriceGru("AAPL", exog_features=["Volume"])
-    if aapl_gru_prediction_vol is not None:
-        print(f"GRU Predicted next day's AAPL price (with Volume): {aapl_gru_prediction_vol:.2f}")
-
-    msft_gru_prediction_vol = predictPriceGru("MSFT", history_period="6mo", exog_features=["Volume"])
-    if msft_gru_prediction_vol is not None:
-        print(f"GRU Predicted next day's MSFT price (with Volume): {msft_gru_prediction_vol:.2f}")
-
     print("\n--- Combined Predictions ---")
     # Note: For combined predictions, ensure the GRU part uses the same exog_features if desired.
     # Here, we'll call predict_price_gru without exog_features for simplicity in combine_predictions.
     # If you want to use exog_features in combined, you'd need to pass it through combine_predictions.
-    print("\n--- Combined Predictions ---")
     aapl_combined_pred, aapl_current_price, aapl_graph = mixedPrediction("AAPL", exog_features=["Volume"])
     if aapl_combined_pred is not None:
         print(f"AAPL Combined Predicted next day's price: {aapl_combined_pred:.2f}")
+        print("DFKJDSHFJSLFHJS",aapl_current_price)
         print(f"AAPL Current Price: {aapl_current_price:.2f}")
         # In a real application, you would display the graph (e.g., in a web app)
         # For console output, we just print a confirmation.
         print("AAPL Prediction Graph generated (base64 encoded).")
 
-    msft_combined_pred, msft_current_price, msft_graph = mixedPrediction("MSFT", history_period="6mo", weights=(0.6, 0.4), exog_features=["Volume"])
+    msft_combined_pred, msft_current_price, msft_graph = mixedPrediction("MSFT", history_period="6m", weights=(0.6, 0.4), exog_features=["Volume"])
     if msft_combined_pred is not None:
         print(f"MSFT Combined Predicted next day's price: {msft_combined_pred:.2f}")
         print(f"MSFT Current Price: {msft_current_price:.2f}")
         print("MSFT Prediction Graph generated (base64 encoded).")
-
-    non_existent_combined_pred, _, _ = mixedPrediction("NONEXISTENTTICKER")
-    if non_existent_combined_pred is None:
-        print("Combined Prediction failed for NONEXISTENTTICKER as expected.")
