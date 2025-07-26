@@ -7,12 +7,14 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-
   <div class="top-bar">
     <div class="greeting">
-      <h2>Hello, {{name}}!</h2>
+      <h2>Hello, {{ name }}!</h2>
     </div>
-    <div>
+    <div class="top-bar-buttons">
+      <a target="_blank" href="https://finance.yahoo.com/markets/stocks/most-active/">
+        <button type="button">All stocks</button>
+      </a>
       <a href="/logout">
         <button type="button">Log out</button>
       </a>
@@ -21,7 +23,7 @@
 
   <div class="main-content">
     <h1>Stock Price Prediction</h1>
-    <form id="predictForm" onsubmit="event.preventDefault(); predict();">
+    <form id="predictForm" onsubmit="event.preventDefault(); convertUserInputToTicker();">
       <div id="inputContainer">
         <input id="ticker" placeholder="Enter ticker (e.g. AAPL)" />
         <button id="predictBtn" type="submit">Predict</button>
@@ -38,6 +40,46 @@
   </div>
 
   <script>
+    let geminiFailed = false;
+    async function convertUserInputToTicker() {
+      const input = document.getElementById("ticker");
+      const rawValue = input.value.trim();
+
+      if (!rawValue) {
+        document.getElementById("error").textContent = "Please enter a company name or ticker.";
+        return;
+      }
+
+      if (!geminiFailed) {
+      try {
+        const response = await fetch('/gemini', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ user_input: rawValue })
+        });
+        const data = await response.json();
+
+        input.value = data.result;
+        const resultText = data.result.trim();
+
+        if (resultText === "Company specified is not publicly traded." || resultText === "No recognizable company mentioned. Please specify a publicly traded company.") {
+          document.getElementById("error").textContent = data.result;
+          document.getElementById("ticker").value = "";
+        } else {
+          document.getElementById("error").textContent = "";
+          predict();
+        }
+      } catch (err) {
+        geminiFailed = true;
+        document.getElementById("error").textContent = "Could not process your request. Please enter the ticker manually.";
+      }
+    } else {
+      predict();
+    }
+  }
+
     async function predict() {
       const input = document.getElementById("ticker");
       const ticker = input.value.trim().toUpperCase();
@@ -51,14 +93,8 @@
       result.textContent = "";
       error.textContent = "";
 
-      if (!ticker) {
-        error.textContent = "Please enter a stock ticker symbol.";
-        return;
-      }
-
       input.disabled = true;
       btn.disabled = true;
-
       progress.style.display = "block";
       progressText.textContent = "Fetching data...";
       progressBar.style.width = "20%";
@@ -68,14 +104,12 @@
         progressText.textContent = "Running model...";
         progressBar.style.width = "60%";
 
-        const res = await fetch(`http://localhost:5000/predict?ticker=${ticker}`);
+        const res = await fetch(`/predict?ticker=${ticker}`);
         if (!res.ok) throw new Error("Server error or invalid response");
 
         const data = await res.json();
-
         progressText.textContent = "Output ready!";
         progressBar.style.width = "100%";
-
         await new Promise(res => setTimeout(res, 300));
 
         result.textContent = `Predicted next close for ${data.ticker}: $${data.predicted_next_close.toFixed(2)} (last close: $${data.last_close.toFixed(2)})`;
@@ -84,11 +118,12 @@
       } finally {
         input.disabled = false;
         btn.disabled = false;
+        geminiFailed = false;
         progress.style.display = "none";
         progressBar.style.width = "0%";
+        document.getElementById("ticker").value = "";
       }
     }
   </script>
-
 </body>
 </html>
