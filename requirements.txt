@@ -7,3 +7,7 @@ pymongo==4.13.2
 matplotlib==3.10.3
 authlib>=1.0.0
 python-dotenv>=1.0.0
+yfinance==0.2.38
+statsmodels==0.14.2
+scikit-learn==1.5.1
+genai==2.1.0
