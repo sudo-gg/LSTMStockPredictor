@@ -21,6 +21,8 @@
     </div>
   </div>
 
+
+
   <div class="main-content">
     <h1>Stock Price Prediction</h1>
     <form id="predictForm" onsubmit="event.preventDefault(); convertUserInputToTicker();">
@@ -28,16 +30,34 @@
         <input id="ticker" placeholder="Enter ticker (e.g. AAPL)" />
         <button id="predictBtn" type="submit">Predict</button>
       </div>
+
+      <div class="toggle-section">
+        <label class="toggle-wrapper">
+          <input type="checkbox" class="toggle-input" hidden>
+          <span class="toggle-button">High</span>
+        </label>
+        <label class="toggle-wrapper">
+          <input type="checkbox" class="toggle-input" hidden>
+          <span class="toggle-button">Low</span>
+        </label>
+        <label class="toggle-wrapper">
+         <input type="checkbox" class="toggle-input" hidden>
+         <span class="toggle-button">Open</span>
+       </label>
+        <label class="toggle-wrapper">
+          <input type="checkbox" class="toggle-input" hidden>
+        <span class="toggle-button">Volume</span>
+        </label>
     </form>
-
-    <div id="progress" style="display: none;">
-      <div id="progressBar"></div>
-      <p id="progressText">Fetching data...</p>
-    </div>
-
-    <p id="result"></p>
-    <p id="error"></p>
   </div>
+
+  <div id="progress" style="display: none;">
+    <div id="progressBar"></div>
+    <p id="progressText">Fetching data...</p>
+  </div>
+
+  <p id="result"></p>
+  <p id="error"></p>
 
   <script>
     let geminiFailed = false;

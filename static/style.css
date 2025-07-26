@@ -89,7 +89,7 @@ button:disabled {
 }
 
 #progress {
-    margin: 20px auto 0;
+    margin: 30px auto 0;
     width: 300px;
 }
 
@@ -110,4 +110,32 @@ button:disabled {
 .top-bar-buttons {
     display: flex;
     gap: 10px;
+}
+
+.toggle-section {
+    margin-top: 30px;
+    margin-bottom: 25px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.toggle-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #5a5a5a;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: opacity 0.4s ease, transform 0.2s ease, background-color 0.3s ease;
+}
+
+.toggle-button:hover {
+    background-color: #444444;
+}
+
+.toggle-input:checked + .toggle-button {
+    background-color: #007bff;
 }
