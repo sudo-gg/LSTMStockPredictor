@@ -3,6 +3,7 @@ import pickle
 import os
 from dotenv import load_dotenv
 from google import genai
+from algo import mixedPrediction
 
 load_dotenv()
 
@@ -26,13 +27,36 @@ def home():
 
 
 
-@app.route('/api/data', methods=['GET'])
-def get_data():
-    data = {
-        "message": "This is a sample response from the API.",
-        "status": "success"
-    }
-    return jsonify(data)
+# @app.route('/api/data', methods=['GET'])
+# def get_data():
+#     data = {
+#         "message": "This is a sample response from the API.",
+#         "status": "success"
+#     }
+#     return jsonify(data)
+
+@app.route('/predict', methods=['POST'])
+def predict():
+    try:
+        data = request.get_json()
+        ticker = data.get('ticker')
+        exog_features = data.get('exog_features', []) # Get exog_features, default to empty list
+        
+        if not ticker:
+            return jsonify({'error': 'Ticker symbol is required'}), 400
+
+        predicted_price, current_price, graph_base64 = mixedPrediction(ticker, exog_features=exog_features)
+
+        if predicted_price is None and current_price is None and graph_base64 is None:
+            return jsonify({'error': 'Prediction failed for the given ticker'}), 500
+
+        return jsonify({
+            'predicted_price': predicted_price,
+            'current_price': current_price,
+            'graph_base64': graph_base64
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/login', methods=['GET', 'POST']) # GET to display the form, POST to handle form submission
 def form():

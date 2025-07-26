@@ -1,3 +1,6 @@
 .env
 venv/
 test.py
+newvenv/
+apple.csv
+PricePredictionExplanation.md

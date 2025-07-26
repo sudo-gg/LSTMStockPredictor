@@ -23,7 +23,7 @@ Where:
 - `f`: An activation function (e.g., tanh or ReLU).
 
 This recurrent connection allows information to persist from one step to the next, enabling the network to learn dependencies across time.
-
+![alt text](image.png)
 ### Challenges with Traditional RNNs:
 
 While powerful, traditional RNNs suffer from two main issues:

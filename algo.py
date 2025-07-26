@@ -9,6 +9,8 @@ from sklearn.preprocessing import MinMaxScaler
 import matplotlib.pyplot as plt
 import io
 import base64
+from io import BytesIO
+from PIL import Image
 
 # Suppress specific warnings from statsmodels
 warnings.filterwarnings("ignore", category=UserWarning, module="statsmodels")
