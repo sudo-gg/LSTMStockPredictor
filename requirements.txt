@@ -11,3 +11,9 @@ yfinance==0.2.38
 statsmodels==0.14.2
 scikit-learn==1.5.1
 genai==2.1.0
+scipy==1.12.1
+beautifulsoup4==4.12.2
+numpy==1.26.4
+genai==2.1.0
+PIL==10.4.0
+pymongo==4.13.2

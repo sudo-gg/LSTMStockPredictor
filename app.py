@@ -8,8 +8,9 @@ import warnings
 import pymongo
 from pymongo.errors import BulkWriteError
 import hashlib
-
-myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+load_dotenv()
+# PROVIDE YOUR OWN MONGO DB CONNECTION STRING HERE ---------------------------
+myclient = pymongo.MongoClient(f"mongodb+srv://{os.getenv('USER_DB')}:{os.getenv('PASSWORD_DB')}@{os.getenv('CLUSTER_URL')}/")
 db = myclient["database"]
 users = db["users"]
 
@@ -19,19 +20,18 @@ def hashText(key):
     hashedText = hashObject.hexdigest()
     return hashedText
 
-# NOTE: THE PASSWORD PARAMETER IS A PASSWORD HASH   
-user_list = [
-    { "username": "Josh", "password": hashText("password")},
-    { "username": "Malachi", "password": hashText("password") }
-]
+# Note: THE PASSWORD PARAMETER IS A PASSWORD HASH   (UNCOMMENT THIS ON THE FIRST RUN TO INITIALISE THE DB)----------------
+# user_list = [
+#     { "username": "admin", "password": hashText("password")},
+#     { "username": "Malachi", "password": hashText("password") }
+# ]
 
-users.insert_many(user_list)
+# users.insert_many(user_list)
 
 warnings.filterwarnings("ignore", category=UserWarning, module="statsmodels")
 warnings.filterwarnings("ignore", category=FutureWarning, module="statsmodels")
 warnings.filterwarnings("ignore", category=FutureWarning, module="algo")
 
-load_dotenv()
 
 client = genai.Client(api_key=os.getenv("GEMINI_KEY_ONE"))
 

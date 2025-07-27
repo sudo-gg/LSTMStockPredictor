@@ -9,9 +9,6 @@ from sklearn.preprocessing import MinMaxScaler
 import matplotlib
 matplotlib.use('Agg') # Use the 'Agg' backend for non-interactive plotting
 import matplotlib.pyplot as plt
-import matplotlib
-matplotlib.use('Agg') 
-import matplotlib.pyplot as plt
 import io
 import base64
 from io import BytesIO
