@@ -6,6 +6,8 @@ import numpy as np
 import torch
 import torch.nn as nn
 from sklearn.preprocessing import MinMaxScaler
+import matplotlib
+matplotlib.use('Agg') # Use the 'Agg' backend for non-interactive plotting
 import matplotlib.pyplot as plt
 import io
 import base64
@@ -15,6 +17,7 @@ from PIL import Image
 # Suppress specific warnings from statsmodels
 warnings.filterwarnings("ignore", category=UserWarning, module="statsmodels")
 warnings.filterwarnings("ignore", category=FutureWarning, module="statsmodels")
+warnings.filterwarnings("ignore", category=FutureWarning, module="pandas")
 
 def predictPriceARIMA(ticker: str, history_period: str = 'max', data: pd.DataFrame = None) -> float:
     """
