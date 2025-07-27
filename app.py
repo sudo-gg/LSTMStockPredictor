@@ -5,6 +5,20 @@ from dotenv import load_dotenv
 from google import genai
 from algo import mixedPrediction
 import warnings
+import pymongo
+from pymongo.errors import BulkWriteError
+
+myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+db = myclient["database"]
+users = db["users"]
+
+
+"""user_list = [
+    { "username": "Josh", "password": "password" },
+    { "username": "Malachi", "password": "password" }
+]
+
+users.insert_many(user_list)"""
 
 warnings.filterwarnings("ignore", category=UserWarning, module="statsmodels")
 warnings.filterwarnings("ignore", category=FutureWarning, module="statsmodels")
@@ -65,6 +79,21 @@ def predict():
 
 @app.route('/login', methods=['GET', 'POST']) # GET to display the form, POST to handle form submission
 def form():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        user = users.find_one({"username": username})
+        if user and user["password"] == password:
+            session['user'] = username
+            return redirect(url_for('home'))
+        else:
+            error = "Invalid credentials, please try again."
+            return render_template('form.html', error=error)
+
+    return render_template('form.html')
+
+"""def form():
     # if the request is a POST, process the form data
     if request.method == 'POST':
         username = request.form['username']
@@ -79,7 +108,7 @@ def form():
             error = "Invalid credentials, please try again."
             return render_template('form.html', error=error)
     
-    return render_template('form.html')
+    return render_template('form.html')"""
 
 @app.route('/logout')
 def logout():
