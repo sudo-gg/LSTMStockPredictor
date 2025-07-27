@@ -7,18 +7,25 @@ from algo import mixedPrediction
 import warnings
 import pymongo
 from pymongo.errors import BulkWriteError
+import hashlib
 
 myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 db = myclient["database"]
 users = db["users"]
 
+def hashText(key):
+    hashObject = hashlib.sha256()
+    hashObject.update(key.encode('utf-8'))
+    hashedText = hashObject.hexdigest()
+    return hashedText
 
-"""user_list = [
-    { "username": "Josh", "password": "password" },
-    { "username": "Malachi", "password": "password" }
+# NOTE: THE PASSWORD PARAMETER IS A PASSWORD HASH   
+user_list = [
+    { "username": "Josh", "password": hashText("password")},
+    { "username": "Malachi", "password": hashText("password") }
 ]
 
-users.insert_many(user_list)"""
+users.insert_many(user_list)
 
 warnings.filterwarnings("ignore", category=UserWarning, module="statsmodels")
 warnings.filterwarnings("ignore", category=FutureWarning, module="statsmodels")
@@ -84,7 +91,7 @@ def form():
         password = request.form['password']
 
         user = users.find_one({"username": username})
-        if user and user["password"] == password:
+        if user and user["password"] == hashText(password):
             session['user'] = username
             return redirect(url_for('home'))
         else:
