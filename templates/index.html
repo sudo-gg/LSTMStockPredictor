@@ -27,7 +27,7 @@
     <h1>Stock Price Prediction</h1>
     <form id="predictForm" onsubmit="event.preventDefault(); convertUserInputToTicker();">
       <div id="inputContainer">
-        <input id="ticker" placeholder="Enter ticker (e.g. AAPL)" />
+        <input id="ticker" placeholder="Enter company or ticker" />
         <button id="predictBtn" type="submit">Predict</button>
       </div>
 
@@ -60,6 +60,7 @@
   <p id="error"></p>
 
   <script>
+    let geminiFailed = false;
     async function convertUserInputToTicker() {
       const input = document.getElementById("ticker");
       const rawValue = input.value.trim();
@@ -69,6 +70,7 @@
         return;
       }
 
+      if (!geminiFailed) {
       try {
         const response = await fetch('/gemini', {
           method: 'POST',
@@ -77,6 +79,7 @@
           },
           body: JSON.stringify({ user_input: rawValue })
         });
+        
         const data = await response.json();
 
         input.value = data.result;
@@ -90,9 +93,14 @@
           predict();
         }
       } catch (err) {
+        geminiFailed = true;
+        document.getElementById("error").textContent = "Could not process your request, Attempting to use input as ticker...";
         predict();
       }
+    } else {
+      predict();
     }
+  }
 
     async function predict() {
       const input = document.getElementById("ticker");
@@ -149,6 +157,7 @@
       } finally {
         input.disabled = false;
         btn.disabled = false;
+        geminiFailed = false;
         progress.style.display = "none";
         progressBar.style.width = "0%";
         document.getElementById("ticker").value = "";

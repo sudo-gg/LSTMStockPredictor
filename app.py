@@ -4,6 +4,11 @@ import os
 from dotenv import load_dotenv
 from google import genai
 from algo import mixedPrediction
+import warnings
+
+warnings.filterwarnings("ignore", category=UserWarning, module="statsmodels")
+warnings.filterwarnings("ignore", category=FutureWarning, module="statsmodels")
+warnings.filterwarnings("ignore", category=FutureWarning, module="algo")
 
 load_dotenv()
 
@@ -125,6 +130,9 @@ def gemini():
                 "If it refers to a known company that is not publicly traded — including private companies, local businesses, or organizations without stock listings — return: 'Company specified is not publicly traded.'\n"
                 "If the input contains vague terms (e.g., 'tech companies', 'car brands') or no identifiable company name, return: 'No recognizable company mentioned. Please specify a publicly traded company.'\n"
                 "Do not provide any explanations — return only the appropriate output message or ticker symbol.\n"
+                "If the user enters a ticker symbol, return the same ticker symbol.\n"
+                "If the user asks for a random company, use a random valid ticker symbol. dont respond with No recognizable company mentioned.\n"
+                "If the user enters multiple ticker symbols/companies, return the ticker symbol of the first company only.\n"
                 f"The user input: {user_input}"
             )
         )
