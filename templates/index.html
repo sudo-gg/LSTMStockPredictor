@@ -60,7 +60,6 @@
   <p id="error"></p>
 
   <script>
-    let geminiFailed = false;
     async function convertUserInputToTicker() {
       const input = document.getElementById("ticker");
       const rawValue = input.value.trim();
@@ -70,7 +69,6 @@
         return;
       }
 
-      if (!geminiFailed) {
       try {
         const response = await fetch('/gemini', {
           method: 'POST',
@@ -92,13 +90,9 @@
           predict();
         }
       } catch (err) {
-        geminiFailed = true;
-        document.getElementById("error").textContent = "Could not process your request. Please enter the ticker manually.";
+        predict();
       }
-    } else {
-      predict();
     }
-  }
 
     async function predict() {
       const input = document.getElementById("ticker");
@@ -151,11 +145,10 @@
             `;
         }
       } catch {
-        error.textContent = "Failed to get prediction. Try again later.";
+          error.textContent = "Failed to get prediction. Try again later.";
       } finally {
         input.disabled = false;
         btn.disabled = false;
-        geminiFailed = false;
         progress.style.display = "none";
         progressBar.style.width = "0%";
         document.getElementById("ticker").value = "";
