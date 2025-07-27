@@ -7,10 +7,14 @@ import torch
 import torch.nn as nn
 from sklearn.preprocessing import MinMaxScaler
 import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.use('Agg') 
+import matplotlib.pyplot as plt
 import io
 import base64
 from io import BytesIO
 from PIL import Image
+
 
 # Suppress specific warnings from statsmodels
 warnings.filterwarnings("ignore", category=UserWarning, module="statsmodels")
